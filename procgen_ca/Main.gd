@@ -1,7 +1,8 @@
-tool
+@tool
 extends Node2D
 
-export(bool)  var draw_caves  setget draw_caves
+@export  var draw_caves : bool :  
+	set: draw_caves
 
 
 # this scene exists solely to run redraw on Caves.tscn
@@ -14,3 +15,4 @@ func draw_caves(value = null):
 	if !Engine.is_editor_hint(): return
 
 	$Caves.redraw()
+# get_type or typeof $Caves.redraw() to make a properly typed the func
