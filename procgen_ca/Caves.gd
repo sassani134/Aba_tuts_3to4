@@ -63,8 +63,8 @@ func dig_caves() -> void:
 
 	for i in range(iterations):
 		# Pick a random point with a 1-tile buffer within the map
-		var x = floor(rand_range(1, map_w-1))
-		var y = floor(rand_range(1, map_h-1))
+		var x = floor(randf_range(1, map_w-1))
+		var y = floor(randf_range(1, map_h-1))
 
 		# if nearby cells > neighbors, make it a roof tile
 		if check_nearby(x,y) > neighbors:
