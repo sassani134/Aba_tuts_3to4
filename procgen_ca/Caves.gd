@@ -1,15 +1,17 @@
-tool
+@tool
 extends TileMap
 
 
-export(int)   var map_w         = 80
-export(int)   var map_h         = 50
-export(int)   var iterations    = 20000
-export(int)   var neighbors     = 4
-export(int)   var ground_chance = 48
-export(int)   var min_cave_size = 80
+@export   var map_w         :int = 80
+@export   var map_h         :int = 50
+@export   var iterations    :int = 20000
+@export   var neighbors     :int = 4
+@export   var ground_chance :int = 48
+@export   var min_cave_size :int = 80
 
-export(bool)  var redraw  setget redraw
+@export  var redraw :bool:
+	set:
+		redraw
 
 enum Tiles { GROUND, TREE, WATER, ROOF }
 
@@ -29,31 +31,34 @@ func redraw(value = null):
 	generate()
 
 
-func generate():
+func generate() -> void:
 	clear()
 	fill_roof()
 	random_ground()
 	dig_caves()
 	get_caves()
 	connect_caves()
+	return
 
 
 # start by filling the map with roof tiles
-func fill_roof():
+func fill_roof() -> void:
 	for x in range(0, map_w):
 		for y in range(0, map_h):
 			set_cell(x, y, Tiles.ROOF)
+	return
 
 
 # then randomly place ground tiles
-func random_ground():
+func random_ground() ->:
 	for x in range(1, map_w-1):
 		for y in range(1, map_h-1):
 			if Util.chance(ground_chance):
 				set_cell(x, y, Tiles.GROUND)
+	return
 
 
-func dig_caves():
+func dig_caves() -> void:
 	randomize()
 
 	for i in range(iterations):
@@ -68,9 +73,10 @@ func dig_caves():
 		# or make it the ground tile
 		elif check_nearby(x,y) < neighbors:
 			set_cell(x, y, Tiles.GROUND)
+	return
 
 
-func get_caves():
+func get_caves() -> void:
 	caves = []
 
 	# locate all the caves and store them
@@ -82,9 +88,10 @@ func get_caves():
 	for cave in caves:
 		for tile in cave:
 			set_cellv(tile, Tiles.GROUND)
+	return
 
 
-func flood_fill(tilex, tiley):
+func flood_fill(tilex :  int, tiley : int):
 	# flood fill the separate regions of the level, discard
 	# the regions that are smaller than a minimum size, and
 	# create a reference for the rest.
@@ -130,7 +137,7 @@ func connect_caves():
 
 
 # do a drunken walk from point1 to point2
-func create_tunnel(point1, point2, cave):
+func create_tunnel(point1 : Vector2, point2 : Vector2, cave : Array):
 	randomize()          # for randf
 	var max_steps = 500  # set a max_steps so editor won't hang if walk fails
 	var steps = 0
@@ -197,7 +204,7 @@ func create_tunnel(point1, point2, cave):
 
 
 # check in 8 dirs to see how many tiles are roofs
-func check_nearby(x, y):
+func check_nearby(x : int, y : int) -> int :
 	var count = 0
 	if get_cell(x, y-1)   == Tiles.ROOF:  count += 1
 	if get_cell(x, y+1)   == Tiles.ROOF:  count += 1
