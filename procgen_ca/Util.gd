@@ -11,7 +11,7 @@ func chance(num : int) -> bool:
 
 
 # Util.choose(["one", "two"])   returns one or two
-func choose(choices):
+func choose(choices) -> int:
 	randomize()
 
 	var rand_index = randi() % choices.size()
