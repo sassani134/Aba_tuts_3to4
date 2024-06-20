@@ -1,3 +1,4 @@
+#https://www.reddit.com/r/godot/comments/13k98b0/how_do_i_use_set_cell/
 @tool
 extends TileMap
 
@@ -10,8 +11,8 @@ extends TileMap
 @export   var min_cave_size :int = 80
 
 @export  var redraw :bool:
-	set:
-		redraw
+	set(value):
+		set_redraw(value)
 
 enum Tiles { GROUND, TREE, WATER, ROOF }
 
@@ -23,7 +24,7 @@ func _ready():
 
 
 
-func redraw(value = null):
+func set_redraw(value = null):
 
 	# only do this if we are working in the editor
 	if !Engine.is_editor_hint(): return
@@ -45,12 +46,14 @@ func generate() -> void:
 func fill_roof() -> void:
 	for x in range(0, map_w):
 		for y in range(0, map_h):
-			set_cell(x, y, Tiles.ROOF)
+#● void set_cell(layer: int, coords: Vector2i, source_id: int = -1, atlas_coords: Vector2i = Vector2i(-1, -1), alternative_tile: int = 0)
+			set_cell(Vector2i(x, y), Tiles.ROOF)
+#void set_cell ( int layer, Vector2i coords, int source_id=-1, Vector2i atlas_coords=Vector2i(-1, -1), int alternative_tile=0 )
 	return
 
 
 # then randomly place ground tiles
-func random_ground() ->:
+func random_ground() ->void:
 	for x in range(1, map_w-1):
 		for y in range(1, map_h-1):
 			if Util.chance(ground_chance):
